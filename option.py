@@ -22,20 +22,22 @@ class Option():
 
     @property
     def date_recorded(self):
-        sql = "SELECT `date` FROM `config` WHERE `table`='options'"
+        sql = ("SELECT `record_date` FROM `crawler_config` "
+               "WHERE `table_name`='options'")
         self._date_recorded = self._db.query_from_mysql(sql)[0][0]
         return self._date_recorded
 
     @date_recorded.setter
     def date_recorded(self, date_recorded):
-        sql = "UPDATE `config` SET `date`='{}' WHERE `table`='{}'"
+        sql = ("UPDATE `crawler_config` SET `record_date`='{}' "
+               "WHERE `table_name`='{}'")
         self._db.update_mysql(sql.format(date_recorded, 'options'))
         self._date_recorded = date_recorded
 
     def crawler(self):
         today = datetime.datetime.today()
         mdate = self.date_recorded
-        sql = "INSERT INTO `options` VALUES (%s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `options` VALUES (null, %s, %s, %s, %s, %s)"
 
         while mdate <= today:
             self._data['syear'] = str(mdate.year)
@@ -56,10 +58,10 @@ class Option():
                                                         "%Y/%m/%d")
                 expire_month = str(row[1])
                 contract_type = row[2]
-                
+
                 if contract_type != 'TXO':
                     continue
-                
+
                 contract_name = row[3]
                 settlement_price = float(row[4])
                 if trade_date <= today and self.date_recorded <= trade_date:

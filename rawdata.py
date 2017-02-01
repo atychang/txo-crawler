@@ -40,21 +40,23 @@ class Rawdata():
 
     @property
     def date_recorded(self):
-        sql = "SELECT `date` FROM `config` WHERE `table`='rawdata'"
+        sql = ("SELECT `record_date` FROM `crawler_config` "
+               "WHERE `table_name`='rawdata'")
         self._date_recorded = self._db.query_from_mysql(sql)[0][0]
         return self._date_recorded
 
     @date_recorded.setter
     def date_recorded(self, date_recorded):
-        sql = "UPDATE `config` SET `date`='{}' WHERE `table`='{}'"
+        sql = ("UPDATE `crawler_config` SET `record_date`='{}' "
+               "WHERE `table_name`='{}'")
         self._db.update_mysql(sql.format(date_recorded, 'rawdata'))
         self._date_recorded = date_recorded
 
     def crawler(self):
         today = datetime.datetime.today()
         mdate = self.date_recorded
-        sql = ("INSERT INTO `rawdata` VALUES (%s, %s, %s, %s, %s, %s, %s, %s,"
-               "%s, %s, %s, %s, %s, %s, %s, %s, %s, null)")
+        sql = ("INSERT INTO `rawdata` VALUES (null, %s, %s, %s, %s, %s, %s, "
+               "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
 
         while mdate <= today:
             date = mdate.strftime("%Y/%m/%d")

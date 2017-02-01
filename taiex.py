@@ -12,13 +12,15 @@ class Taiex():
 
     @property
     def date_recorded(self):
-        sql = "SELECT `date` FROM `config` WHERE `table`='taiex'"
+        sql = ("SELECT `record_date` FROM `crawler_config` "
+               "WHERE `table_name`='taiex'")
         self._date_recorded = self._db.query_from_mysql(sql)[0][0]
         return self._date_recorded
 
     @date_recorded.setter
     def date_recorded(self, date_recorded):
-        sql = "UPDATE `config` SET `date`='{}' WHERE `table`='{}'"
+        sql = ("UPDATE `crawler_config` SET `record_date`='{}' "
+               "WHERE `table_name`='{}'")
         self._db.update_mysql(sql.format(date_recorded, 'taiex'))
         self._date_recorded = date_recorded
 
@@ -51,7 +53,7 @@ class Taiex():
             price_close = row[4]
 
             if trade_date <= today and self.date_recorded <= trade_date:
-                sql = "INSERT INTO `taiex` VALUES (%s, %s, %s, %s, %s)"
+                sql = "INSERT INTO `taiex` VALUES (null, %s, %s, %s, %s, %s)"
                 self._db.insert_into_mysql(sql, (trade_date, price_open,
                                                  price_high, price_low,
                                                  price_close))
