@@ -1,4 +1,5 @@
 import datetime
+import requests
 import pandas as pd
 
 import database
@@ -37,7 +38,8 @@ class Taiex():
             mdate = self.date_recorded
 
     def parse_page(self, myear, mmon, today):
-        table = pd.read_html(self._url.format(myear, mmon))
+        r = requests.post(self._url, data = {'myear': myear, 'mmon': mmon})
+        table = pd.read_html(r.text)
         table = table[-1]
         table = table.drop(table.columns[0:2], axis=0)
 
