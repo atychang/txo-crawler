@@ -56,7 +56,7 @@ class Option():
                 trade_date = row[0]
                 trade_date = datetime.datetime.strptime(trade_date,
                                                         "%Y/%m/%d")
-                expire_month = str(row[1])
+                expire_month = str(row[1]).strip()
                 contract_type = row[2]
 
                 if contract_type != 'TXO':

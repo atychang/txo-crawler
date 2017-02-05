@@ -55,8 +55,8 @@ class Rawdata():
     def crawler(self):
         today = datetime.datetime.today()
         mdate = self.date_recorded
-        sql = ("INSERT INTO `rawdata` VALUES (null, %s, %s, %s, %s, %s, %s, "
-               "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        sql = ("INSERT INTO `rawdata` VALUES (null, %s, %s, TRIM(%s), %s, %s,
+               "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
 
         while mdate <= today:
             date = mdate.strftime("%Y/%m/%d")
